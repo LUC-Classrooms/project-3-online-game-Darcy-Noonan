@@ -9,8 +9,8 @@ var player1;
 function setup() {
 
   createCanvas(600, 400);
-player1 = new Player (width/2, height* 4/5)
-console.log (player1);
+ player1 = new Player(width/2, height* 4/5);
+  console.log (player1);
 }
 
 function draw() {
@@ -67,7 +67,7 @@ function mousePressed() { // what happens in response to mouse click
 if (gameState == "splash"){
   gameState = "play";
 } else if (gameState == "play"){ // if first thing is not true it checks the next, then the next
- gameState = "gameOver"; 
+// gameState = "gameOver"; // Stops click from making it game over screen
 } else if (gameState == "gameOver"){
     gamestate = "splash"; 
  }
@@ -77,12 +77,35 @@ console.log(gameState)
 }
 
 function keyPressed () {
-  switch keycode () {
-    case UP_ARROW :
-        // action
-        break;
-      case DOWN_ARROW :
-        // action
-        break;
-  }
+ switch (keyCode) {
+   case UP_ARROW :
+        player1.y -=30; // move up 10 pix
+        player1.angle = 0; // no rotation 
+        if (player1.y < 0) {
+        player1.y = height; } // wrap to bottom
+     break;
+    case DOWN_ARROW :
+      player1.y +=30; // move down 10 pix
+      player1.angle = PI; // flip 180 degrees
+      if (player1.y > height) {
+      player1.y = 0; } // wrap to top 
+     break;
+     case LEFT_ARROW : 
+     console.log ("left"); 
+     player1.x -=30; // move left 30 pix
+     player1.angle = PI + HALF_PI; // no rotation 
+     if (player1.x < 0) {
+     player1.x = width; }
+     break; 
+     case RIGHT_ARROW : 
+     console.log ("right"); 
+     player1.x +=30; // move left 10 pix
+     player1.angle = HALF_PI; // no rotation 
+     if (player1.x > width) {
+     player1.x = 0;
+     }
+     break; 
+     default : 
+     console.log ("use the arrow keys to move")
+ }
 }
