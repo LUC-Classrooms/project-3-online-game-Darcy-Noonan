@@ -110,6 +110,9 @@ if (gameState == "splash"){
   gameState = "play";
   gameTimer.start (); // start the game timer
   dropTimer.start (); // start the drop timer 
+  presents = new Array(0); // clear presents with the new game
+  player1.x = width/2;  // reset location
+  player1.y = height * 5/6; // reset location
 } else if (gameState == "play"){ // if first thing is not true it checks the next, then the next
 // gameState = "gameOver"; // Stops click from making it game over screen
 } else if (gameState == "gameOver"){
