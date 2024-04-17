@@ -6,12 +6,21 @@
  */
 var gameState = "splash";
 var player1; 
+var gameTimer; // time the game plays
+var testBox; // a box to preview on the splash screen
+var dropTimer; // regulate box drops
+var presents = new Array(0); // an empty array called "presents" 
+
 function setup() {
 
   createCanvas(600, 400);
  player1 = new Player(width/2, height* 4/5);
   console.log (player1);
+  gameTimer = new Timer(10000); // 10 second timer
+ dropTimer = new Timer(1000); // defined w/ a new timer object 
+testBox = new Box(width/2, height/3);  
 }
+
 
 function draw() {
   background(200);
@@ -42,16 +51,49 @@ function splash() {
   text("Let's Play a Game!", width / 2, height / 2);
   textSize(12);
   text("(click the mouse to continue)", width / 2, height / 2 + 30);
+
+testBox.display();
+testBox.spin();
 }
 
 function play() {
   // this is what you see when the game is running 
-  background(0, 200, 0);
+  background(0, 200, 0); // green background 
   fill(0, 0, 200)
-  textAlign(CENTER);
-  textSize(16);
+  textAlign(CENTER);// text in the center
+  textSize(16); // text size 
  // text("This is where the Game happens", width / 2, height / 2);
 player1.display();
+if (gameTimer.isFinished()) {
+  gameState = "gameOver"
+} 
+if(dropTimer.isFinished()) {
+  let p = new Box (random (width), -40); 
+  // new box, anywhere acorss the width of canvas but 40p above canvas
+  presents.push (p); // add object 'p' to the 'presents' Array
+  dropTimer.start (); // restart timer for next drop
+}
+for(let i = 0; i < presents.length; i++) {// This shows and moves the presents. 
+  // for each element of the array, represented by 'i', do the following:
+  presents[i].display(); // draw it on the canvas
+  presents[i].move(); // make it drop
+  presents[i].spin() // make it rotate
+
+  let d = dist(presents[i].x, presents[i].y, player1.x, player1.y);
+  if (d < 50) {  // if it's within 50 pixels, do something!
+  }
+  if (d < 50) {
+    presents.splice(i, 1); // remove 1 item at index 'i'
+  } else if(presents[i].y > height) { // This clears the presents when they leave the screen. 
+    // present went below the canvas
+    presents.splice(i, 1);
+    // remove 1 element from from "presents" at index 'i'
+  }
+}
+
+textAlign(LEFT);
+ text("elapsed time: " + gameTimer.elapsedTime, 40, 100);
+ // show elapsed time in top left corner
 }
 
 function gameOver() {
@@ -66,6 +108,8 @@ function gameOver() {
 function mousePressed() { // what happens in response to mouse click
 if (gameState == "splash"){
   gameState = "play";
+  gameTimer.start (); // start the game timer
+  dropTimer.start (); // start the drop timer 
 } else if (gameState == "play"){ // if first thing is not true it checks the next, then the next
 // gameState = "gameOver"; // Stops click from making it game over screen
 } else if (gameState == "gameOver"){
