@@ -10,13 +10,14 @@ var gameTimer; // time the game plays
 var testBox; // a box to preview on the splash screen
 var dropTimer; // regulate box drops
 var presents = new Array(0); // an empty array called "presents" 
+var score = 0; // keep track of points (starting at 0)
 
 function setup() {
 
   createCanvas(600, 400);
  player1 = new Player(width/2, height* 4/5);
   console.log (player1);
-  gameTimer = new Timer(10000); // 10 second timer
+  gameTimer = new Timer(20000); // 10 second timer
  dropTimer = new Timer(1000); // defined w/ a new timer object 
 testBox = new Box(width/2, height/3);  
 }
@@ -58,8 +59,8 @@ testBox.spin();
 
 function play() {
   // this is what you see when the game is running 
-  background(0, 200, 0); // green background 
-  fill(0, 0, 200)
+  background(0, 100, 200); // blue background 
+  fill(0, 0, 0)
   textAlign(CENTER);// text in the center
   textSize(16); // text size 
  // text("This is where the Game happens", width / 2, height / 2);
@@ -73,27 +74,31 @@ if(dropTimer.isFinished()) {
   presents.push (p); // add object 'p' to the 'presents' Array
   dropTimer.start (); // restart timer for next drop
 }
-for(let i = 0; i < presents.length; i++) {// This shows and moves the presents. 
-  // for each element of the array, represented by 'i', do the following:
-  presents[i].display(); // draw it on the canvas
-  presents[i].move(); // make it drop
-  presents[i].spin() // make it rotate
+for (let i = 0; i < presents.length; i++) {
+  presents[i].display();
+  presents[i].move();
+  presents[i].spin();
+
+  if (presents[i].y > height) {
+    presents.splice(i, 1); // remove from array
+    score--; // decrement score by 1
+  }
 
   let d = dist(presents[i].x, presents[i].y, player1.x, player1.y);
-  if (d < 50) {  // if it's within 50 pixels, do something!
-  }
+  // d is now the distance in pixels between presents[i] and player1
   if (d < 50) {
-    presents.splice(i, 1); // remove 1 item at index 'i'
-  } else if(presents[i].y > height) { // This clears the presents when they leave the screen. 
-    // present went below the canvas
-    presents.splice(i, 1);
-    // remove 1 element from from "presents" at index 'i'
+    presents.splice(i, 1); // remove the present from the array
+    if (d < 50) {
+      presents.splice(i, 1);
+      score ++; // add 1 point!
+    }
   }
-}
+} // end of for() loop
 
 textAlign(LEFT);
  text("elapsed time: " + gameTimer.elapsedTime, 40, 100);
  // show elapsed time in top left corner
+ text("Score: " + score, 20, 40);
 }
 
 function gameOver() {
@@ -103,6 +108,7 @@ function gameOver() {
   textAlign(CENTER);
   textSize(16);
   text("Game Over!", width / 2, height / 2);
+  text("Your final score: " + score, width/2, height * 2/3);
 }
 
 function mousePressed() { // what happens in response to mouse click
@@ -110,6 +116,7 @@ if (gameState == "splash"){
   gameState = "play";
   gameTimer.start (); // start the game timer
   dropTimer.start (); // start the drop timer 
+  score = 0; // reset score to 0 at start of game
   presents = new Array(0); // clear presents with the new game
   player1.x = width/2;  // reset location
   player1.y = height * 5/6; // reset location
