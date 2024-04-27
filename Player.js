@@ -10,7 +10,7 @@ function Player(tempX, tempY) {
     translate(this.x, this.y); // move origin point
     rotate(this.angle); // player can rotate
 
-    fill(0); // black
+  
     /** calculate points on a triangle based on a unit circle. You could use this method to draw more complex polygons that would fit inside a circle centered on (this.x, this.y)
      * For any point around the circle, x = the cosine of the angle in radians from 0 to TWO_PI, and y = the sine of that angle. an angle of 0 is the right side of the circle, PI is the left side. 
      * The points generated this way are relative to the coordinate point (0,0). 
@@ -31,9 +31,14 @@ function Player(tempX, tempY) {
     //triangle(x1, y1, x2, y2, x3, y3);
     //or draw a complex polygon
     beginShape();
-    vertex(x1, y1);
-    vertex(x2, y2);
-    vertex(x3, y3);
+    fill ("orange") // Bill color
+  rect (0 - 110, 0 - 38, 40, 10)// beak
+  fill ("yellow") // Duck color
+  triangle (0 + 55, -10, 0 + 47, 0 + 17, 0 + 90, 0) // tail
+  ellipse (0, 0, 130, 50)// duck body
+  ellipse (0 - 60, 0 - 30, 70, 40)// duck head
+  fill (0, 0, 0)// black for the eye
+  ellipse (0 - 75, 0 - 36, 10) // eye
     endShape();
     // uncomment the next two lines to see the circle
     // noFill();
@@ -45,9 +50,7 @@ function Player(tempX, tempY) {
 
 
   this.move = function () {
-//folow the mouse for now
     this.x = mouseX;
     this.y = mouseY;
-
   }
 }

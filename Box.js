@@ -10,30 +10,27 @@ function Box(_x, _y){
 
   /* choose a color scheme at random */
   if(random(100) > 50){ // 50-50 chance
-    this.boxColor = color(random(100, 255), 0, 0); // red
-    this.ribbonColor = color(0, random(100, 255), 0); // green
+    this.boxColor = color (180, random(170, 190), 0); // Yellow y 
   } else {
-    this.boxColor = color(0, random(100, 255), 0); // green
-    this.ribbonColor = color(random(100, 255), 0, 0); // red
+    this.boxColor = color(160, random(150, 170), 0); // Yellow
   }
 
   this.display = function(){
 
     push();
     translate(this.x, this.y);
-    rotate(this.angle);
+   rotate(this.angle);
 
     rectMode(CENTER);
     fill(this.boxColor);
-    rect(0, 0, 40); // 40px square
-
-    fill(this.ribbonColor);
-    rect(0, 0, 40, 10); // horizontal ribbon
-    rect(0, 0, 10, 40); // vertical ribbon
+  triangle (-30, -30, -6, 20, 18, -10) // corn triangle part
+   ellipse (0, 0, 40) // corn circle 
+   // rectangle (10, 10, 10, 10, 10)
 
     pop();
 
   }
+ 
 
   this.move = function() {
     this.y += this.ySpeed; // spin
